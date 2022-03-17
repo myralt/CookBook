@@ -17,11 +17,26 @@ class Image
     private $path;
 
     #[ORM\Column(type: 'boolean')]
-    private $main;
+    private $main = false;
 
     #[ORM\ManyToOne(targetEntity: Recipe::class, inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: false)]
     private $recipe;
+
+    public function __construct($init = [])
+    {
+        $this->hydrate($init);
+    }
+
+    public function hydrate(array $vals = [])
+    {
+        foreach ($vals as $key => $val) {
+            $method = "set" . ucfirst($key);
+            if (method_exists($this, $method)) {
+                $this->$method($val);
+            }
+        }
+    }
 
     public function getId(): ?int
     {

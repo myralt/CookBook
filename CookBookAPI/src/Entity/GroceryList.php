@@ -21,8 +21,10 @@ class GroceryList
     #[ORM\OneToMany(mappedBy: 'list', targetEntity: ListItem::class)]
     private $items;
 
-    public function __construct()
+    public function __construct($name)
     {
+        $this->name = $name;
+
         $this->items = new ArrayCollection();
     }
 

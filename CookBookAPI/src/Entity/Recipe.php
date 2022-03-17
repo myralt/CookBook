@@ -52,10 +52,22 @@ class Recipe
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Image::class, orphanRemoval: true)]
     private $images;
 
-    public function __construct()
+    public function __construct($init = [])
     {
+        $this->hydrate($init);
+
         $this->ingredients = new ArrayCollection();
         $this->images = new ArrayCollection();
+    }
+
+    public function hydrate(array $vals = [])
+    {
+        foreach ($vals as $key => $val) {
+            $method = "set" . ucfirst($key);
+            if (method_exists($this, $method)) {
+                $this->$method($val);
+            }
+        }
     }
 
     public function getId(): ?int

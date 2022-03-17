@@ -17,7 +17,12 @@ class Product
     private $name;
 
     #[ORM\Column(type: 'boolean')]
-    private $inStock;
+    private $inStock = true;
+
+    public function __construct($name)
+    {
+        $this->name = $name;
+    }
 
     public function getId(): ?int
     {

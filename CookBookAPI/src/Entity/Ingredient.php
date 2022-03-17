@@ -24,6 +24,21 @@ class Ingredient
     #[ORM\JoinColumn(nullable: false)]
     private $product;
 
+    public function __construct($init = [])
+    {
+        $this->hydrate($init);
+    }
+
+    public function hydrate(array $vals = [])
+    {
+        foreach ($vals as $key => $val) {
+            $method = "set" . ucfirst($key);
+            if (method_exists($this, $method)) {
+                $this->$method($val);
+            }
+        }
+    }
+
     public function getUnit(): ?string
     {
         return $this->unit;

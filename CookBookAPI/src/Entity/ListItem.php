@@ -22,7 +22,13 @@ class ListItem
     private $product;
 
     #[ORM\Column(type: 'integer')]
-    private $quantity;
+    private $quantity = 1;
+
+    public function __construct(Product $product, GroceryList $list)
+    {
+        $this->list = $list;
+        $this->product = $product;
+    }
 
     public function getNote(): ?string
     {

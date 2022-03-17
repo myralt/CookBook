@@ -21,8 +21,10 @@ class Folder
     #[ORM\OneToMany(mappedBy: 'folder', targetEntity: Recipe::class)]
     private $recipes;
 
-    public function __construct()
+    public function __construct($name)
     {
+        $this->name = $name;
+
         $this->recipes = new ArrayCollection();
     }
 
