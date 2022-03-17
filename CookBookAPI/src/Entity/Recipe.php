@@ -40,6 +40,10 @@ class Recipe
     #[ORM\Column(type: 'datetime')]
     private $creationDate;
 
+    #[ORM\ManyToOne(targetEntity: Folder::class, inversedBy: 'recipes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $folder;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -149,6 +153,18 @@ class Recipe
     public function setCreationDate(\DateTimeInterface $creationDate): self
     {
         $this->creationDate = $creationDate;
+
+        return $this;
+    }
+
+    public function getFolder(): ?Folder
+    {
+        return $this->folder;
+    }
+
+    public function setFolder(?Folder $folder): self
+    {
+        $this->folder = $folder;
 
         return $this;
     }
