@@ -12,23 +12,26 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class RecipeController extends AbstractController
 {
-    #[Route('/add/recipe', name: 'new_recipe')]
+    #[Route('/add/recipe', name: 'new_recipe', methods: 'POST')]
     public function addRecipe(Request $req, SerializerInterface $serializer, ManagerRegistry $doctrine): Response
     {
         $form = $serializer->deserialize(
             $req->getContent(),
-            RecipeForm::class,
+            Recipe::class,
             'json'
         );
 
-        $entityManager = $doctrine->getManager();
+        // $entityManager = $doctrine->getManager();
 
         //$entityManager->persist($newRecipe);
 
         //$entityManager->flush();
 
+        $resp = $serializer->serialize($form, 'json', []);
+
         return new Response(
-            '',
+            //$req->getContent(),
+            $resp,
             Response::HTTP_OK,
             ['content-type' => 'application/json']
         );
