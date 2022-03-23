@@ -20,7 +20,7 @@ class Ingredient
     private $recipe;
 
     #[ORM\Id]
-    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[ORM\ManyToOne(targetEntity: Product::class, cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: false)]
     private $product;
 

@@ -17,21 +17,23 @@ class RecipeController extends AbstractController
     #[Route('/add/recipe', name: 'new_recipe', methods: 'POST')]
     public function addRecipe(Request $req, SerializerInterface $serializer, ManagerRegistry $doctrine): Response
     {
+        $form = new Recipe();
+
         $form = $serializer->deserialize(
             $req->getContent(),
             Recipe::class,
             'json'
         );
 
-        // $entityManager = $doctrine->getManager();
+        $em = $doctrine->getManager();
 
-        //$entityManager->persist($newRecipe);
+        $em->persist($form);
 
-        //$entityManager->flush();
+        $em->flush();
 
         $resp = $serializer->serialize($form, 'json', [
             DateTimeNormalizer::FORMAT_KEY => 'd-m-y H:i',
-            AbstractNormalizer::IGNORED_ATTRIBUTES => ['recipes']
+            AbstractNormalizer::IGNORED_ATTRIBUTES => ['recipes', 'recipe']
         ]);
 
         return new Response(

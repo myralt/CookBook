@@ -42,14 +42,14 @@ class Recipe
     #[ORM\Column(type: 'datetime')]
     private $creationDate;
 
-    #[ORM\ManyToOne(targetEntity: Folder::class, inversedBy: 'recipes')]
+    #[ORM\ManyToOne(targetEntity: Folder::class, inversedBy: 'recipes', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: true)]
     private $folder;
 
-    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Ingredient::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Ingredient::class, orphanRemoval: true, cascade: ['persist'])]
     private $ingredients;
 
-    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Image::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Image::class, orphanRemoval: true, cascade: ['persist'])]
     private $images;
 
     public function __construct($init = [])
