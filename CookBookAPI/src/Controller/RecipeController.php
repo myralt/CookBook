@@ -8,7 +8,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 
 class RecipeController extends AbstractController
 {
@@ -27,7 +29,10 @@ class RecipeController extends AbstractController
 
         //$entityManager->flush();
 
-        $resp = $serializer->serialize($form, 'json', []);
+        $resp = $serializer->serialize($form, 'json', [
+            DateTimeNormalizer::FORMAT_KEY => 'd-m-y H:i',
+            AbstractNormalizer::IGNORED_ATTRIBUTES => ['recipes']
+        ]);
 
         return new Response(
             //$req->getContent(),

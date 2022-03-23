@@ -34,16 +34,16 @@ class Recipe
     private $persons;
 
     #[ORM\Column(type: 'boolean')]
-    private $pinned;
+    private $pinned = false;
 
     #[ORM\Column(type: 'integer')]
-    private $pinSize;
+    private $pinSize = 2;
 
     #[ORM\Column(type: 'datetime')]
     private $creationDate;
 
     #[ORM\ManyToOne(targetEntity: Folder::class, inversedBy: 'recipes')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private $folder;
 
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Ingredient::class, orphanRemoval: true)]
