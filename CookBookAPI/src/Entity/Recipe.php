@@ -47,7 +47,7 @@ class Recipe
 
     #[Assert\NotBlank]
     #[Assert\Range(min: 1, max: 3)]
-    #[ORM\Column(type: 'integer', options: ['default' => 2, 'check' => [1, 2, 3]])]
+    #[ORM\Column(type: 'integer', options: ['default' => 2])]
     private $pinSize = 2;
 
     #[Assert\NotBlank]
