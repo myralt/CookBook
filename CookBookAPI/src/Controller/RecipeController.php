@@ -63,15 +63,26 @@ class RecipeController extends AbstractController
         );
     }
 
-    #[Route('/all/recipes/{id}', name: 'recipe')]
-    public function getRecipe(): Response
+    #[Route('/all/recipes/{id}', name: 'recipe', methods: 'GET')]
+    public function getRecipe(int $id, SerializerInterface $serializer, ManagerRegistry $doctrine): Response
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
+        $repo = $doctrine->getRepository(Recipe::class);
+
+        $selectedRecipe = $repo->find($id);
+
+        $resp = $serializer->serialize($selectedRecipe, 'json', [
+            DateTimeNormalizer::FORMAT_KEY => 'd-m-y H:i',
+            AbstractNormalizer::IGNORED_ATTRIBUTES => ['recipes', 'recipe']
         ]);
+
+        return new Response(
+            $resp,
+            Response::HTTP_OK,
+            ['content-type' => 'application/json']
+        );
     }
 
-    #[Route('/update/recipe/{id}', name: 'mod_recipe')]
+    #[Route('/update/recipe/{id}', name: 'mod_recipe', methods: 'PUT')]
     public function updateRecipe(): Response
     {
         return $this->json([
@@ -79,7 +90,7 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    #[Route('/delete/recipe/{id}', name: 'del_recipe')]
+    #[Route('/delete/recipe/{id}', name: 'del_recipe', methods: 'DELETE')]
     public function deleteRecipe(): Response
     {
         return $this->json([
