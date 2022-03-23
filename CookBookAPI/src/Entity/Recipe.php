@@ -6,6 +6,7 @@ use App\Repository\RecipeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 class Recipe
@@ -15,40 +16,56 @@ class Recipe
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 255)]
     #[ORM\Column(type: 'string', length: 255)]
     private $name;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'integer')]
     private $rating;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'text')]
     private $description;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'integer')]
     private $cookingTime;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'text')]
     private $preparation;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'integer')]
     private $persons;
 
-    #[ORM\Column(type: 'boolean')]
+    #[Assert\NotBlank]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $pinned = false;
 
-    #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
+    #[Assert\Range(min: 1, max: 3)]
+    #[ORM\Column(type: 'integer', options: ['default' => 2, 'check' => [1, 2, 3]])]
     private $pinSize = 2;
 
+    #[Assert\NotBlank]
     #[ORM\Column(type: 'datetime')]
     private $creationDate;
 
+    #[Assert\Valid]
     #[ORM\ManyToOne(targetEntity: Folder::class, inversedBy: 'recipes', cascade: ['persist'])]
     #[ORM\JoinColumn(nullable: true)]
     private $folder;
 
+    #[Assert\NotBlank]
+    #[Assert\Valid]
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Ingredient::class, orphanRemoval: true, cascade: ['persist'])]
     private $ingredients;
 
+    #[Assert\NotBlank]
+    #[Assert\Valid]
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Image::class, orphanRemoval: true, cascade: ['persist'])]
     private $images;
 

@@ -11,11 +11,12 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class RecipeController extends AbstractController
 {
     #[Route('/add/recipe', name: 'new_recipe', methods: 'POST')]
-    public function addRecipe(Request $req, SerializerInterface $serializer, ManagerRegistry $doctrine): Response
+    public function addRecipe(Request $req, SerializerInterface $serializer, ManagerRegistry $doctrine, ValidatorInterface $validator): Response
     {
         $form = new Recipe();
 
@@ -25,23 +26,30 @@ class RecipeController extends AbstractController
             'json'
         );
 
-        $em = $doctrine->getManager();
+        $errors = $validator->validate($form);
+        if (!count($errors)) {
+            $em = $doctrine->getManager();
 
-        $em->persist($form);
+            $em->persist($form);
 
-        $em->flush();
+            $em->flush();
 
-        $resp = $serializer->serialize($form, 'json', [
-            DateTimeNormalizer::FORMAT_KEY => 'd-m-y H:i',
-            AbstractNormalizer::IGNORED_ATTRIBUTES => ['recipes', 'recipe']
+            $resp = $serializer->serialize($form, 'json', [
+                DateTimeNormalizer::FORMAT_KEY => 'd-m-y H:i',
+                AbstractNormalizer::IGNORED_ATTRIBUTES => ['recipes', 'recipe']
+            ]);
+
+            return new Response(
+                //$req->getContent(),
+                $resp,
+                Response::HTTP_OK,
+                ['content-type' => 'application/json']
+            );
+        }
+
+        return $this->json([
+            'message' => (string) $errors,
         ]);
-
-        return new Response(
-            //$req->getContent(),
-            $resp,
-            Response::HTTP_OK,
-            ['content-type' => 'application/json']
-        );
     }
 
     #[Route('/all/recipes', name: 'all_recipes', methods: 'GET')]

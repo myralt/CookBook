@@ -6,6 +6,7 @@ use App\Repository\FolderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: FolderRepository::class)]
 class Folder
@@ -15,6 +16,8 @@ class Folder
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 50)]
     #[ORM\Column(type: 'string', length: 50)]
     private $name;
 

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 class Image
@@ -13,12 +14,16 @@ class Image
     #[ORM\Column(type: 'integer')]
     private $id;
 
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 255)]
     #[ORM\Column(type: 'string', length: 255)]
     private $path;
 
-    #[ORM\Column(type: 'boolean')]
+    #[Assert\NotBlank]
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private $main = false;
 
+    #[Assert\NotBlank]
     #[ORM\ManyToOne(targetEntity: Recipe::class, inversedBy: 'images')]
     #[ORM\JoinColumn(nullable: false)]
     private $recipe;
