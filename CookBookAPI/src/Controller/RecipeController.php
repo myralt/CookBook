@@ -44,12 +44,23 @@ class RecipeController extends AbstractController
         );
     }
 
-    #[Route('/all/recipes', name: 'all_recipes')]
-    public function getAllRecipes(): Response
+    #[Route('/all/recipes', name: 'all_recipes', methods: 'GET')]
+    public function getAllRecipes(SerializerInterface $serializer, ManagerRegistry $doctrine): Response
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
+        $repo = $doctrine->getRepository(Recipe::class);
+
+        $allRecipes = $repo->findAll();
+
+        $resp = $serializer->serialize($allRecipes, 'json', [
+            DateTimeNormalizer::FORMAT_KEY => 'd-m-y H:i',
+            AbstractNormalizer::IGNORED_ATTRIBUTES => ['recipes', 'recipe']
         ]);
+
+        return new Response(
+            $resp,
+            Response::HTTP_OK,
+            ['content-type' => 'application/json']
+        );
     }
 
     #[Route('/all/recipes/{id}', name: 'recipe')]
