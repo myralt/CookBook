@@ -30,9 +30,3 @@ ReactDOM.render(
   </BrowserRouter>,
   document.getElementById("root")
 );
-
-// entrypoint of application: common layout (side navigation, header, main content)
-// homepage - main content layout: search bar, pin grid
-// folders aka recipes - main content layout: search bar, if no folders just a list of recipes, if folders, list of folders (all + others)
-// new recipe form - main content is form
-// pantry - search bar, main content is list of all products
