@@ -2,8 +2,8 @@ import { useState } from "react";
 import IngredientFormFields from "./IngredientFormFields";
 
 function RecipeForm() {
-  let ingredientCount = 0;
-  const [ingredients, setIngredients] = useState([ingredientCount]);
+  const [count, setCount] = useState(0);
+  const [ingredients, setIngredients] = useState([]);
 
   return (
     <>
@@ -29,14 +29,7 @@ function RecipeForm() {
         <div id="ingredients">
           <h2>Ingredients :</h2>
           <button onClick={addIngredient}>Add an ingredient</button>
-          {ingredients.map((index) => {
-            return (
-              <IngredientFormFields
-                key={index.toString()}
-                count={ingredients[index]}
-              />
-            );
-          })}
+          {ingredients}
         </div>
 
         <label htmlFor="prep-steps">Preparation Steps</label>
@@ -69,9 +62,22 @@ function RecipeForm() {
 
   function addIngredient(event) {
     event.preventDefault();
-    ingredientCount++;
-    setIngredients([...ingredients, ingredientCount]);
+    setCount(count + 1);
+    let ingredientSection = (
+      <div key={count.toString()}>
+        <IngredientFormFields count={count} />
+        <button onClick={removeIngredient}>Remove</button>
+      </div>
+    );
+    setIngredients([...ingredients, ingredientSection]);
+    console.log(ingredients);
+  }
+
+  function removeIngredient(event) {
+    event.preventDefault();
+    const removed = event.target.parentNode;
+    document.getElementById("ingredients").removeChild(removed);
+    console.log(ingredients);
   }
 }
-
 export default RecipeForm;
