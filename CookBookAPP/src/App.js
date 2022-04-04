@@ -4,9 +4,6 @@ import "./App.css";
 function App() {
   return (
     <>
-      <header>
-        <h1>Placeholder title</h1>
-      </header>
       <nav>
         <ul>
           <li>
