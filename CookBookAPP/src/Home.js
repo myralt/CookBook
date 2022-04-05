@@ -1,5 +1,4 @@
 function Home() {
-  return <p>test</p>;
+  return <h1>Pinned</h1>;
 }
-
 export default Home;

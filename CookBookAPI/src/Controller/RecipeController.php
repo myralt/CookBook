@@ -105,4 +105,23 @@ class RecipeController extends AbstractController
             'message' => 'Welcome to your new controller!',
         ]);
     }
+
+    #[Route('/pins', name: 'get_pins', methods: 'GET')]
+    public function getPins(SerializerInterface $serializer, ManagerRegistry $doctrine): Response
+    {
+        $repo = $doctrine->getRepository(Recipe::class);
+
+        $allPins = $repo->findBy(["pinned" => true]);
+
+        $resp = $serializer->serialize($allPins, 'json', [
+            DateTimeNormalizer::FORMAT_KEY => 'd-m-y H:i',
+            AbstractNormalizer::IGNORED_ATTRIBUTES => ['recipes', 'recipe']
+        ]);
+
+        return new Response(
+            $resp,
+            Response::HTTP_OK,
+            ['content-type' => 'application/json']
+        );
+    }
 }
