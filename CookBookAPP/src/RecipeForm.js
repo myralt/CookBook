@@ -2,7 +2,6 @@ import { useState } from "react";
 import IngredientFormFields from "./IngredientFormFields";
 
 function RecipeForm() {
-  const [count, setCount] = useState(0);
   const [ingredients, setIngredients] = useState([]);
 
   return (
@@ -62,22 +61,20 @@ function RecipeForm() {
 
   function addIngredient(event) {
     event.preventDefault();
-    setCount(count + 1);
-    let ingredientSection = (
-      <div key={count.toString()}>
-        <IngredientFormFields count={count} />
+    const idForRemoval = ingredients.length + 1;
+    const ingredientSection = (
+      <div key={idForRemoval.toString()} id={idForRemoval}>
+        <IngredientFormFields />
         <button onClick={removeIngredient}>Remove</button>
       </div>
     );
     setIngredients([...ingredients, ingredientSection]);
-    console.log(ingredients);
   }
 
-  function removeIngredient(event) {
+  function removeIngredient(event, array, id) {
     event.preventDefault();
     const removed = event.target.parentNode;
     document.getElementById("ingredients").removeChild(removed);
-    console.log(ingredients);
   }
 }
 export default RecipeForm;
