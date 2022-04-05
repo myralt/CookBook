@@ -5,7 +5,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./App";
 import Home from "./Home";
 import RecipeForm from "./RecipeForm";
-import RecipeIndex from "./RecipeIndex";
+import FolderIndex from "./FolderIndex";
 import Folder from "./Folder";
 import Recipe from "./Recipe";
 import Pantry from "./Pantry";
@@ -17,7 +17,7 @@ ReactDOM.render(
     <Routes>
       <Route path="/" element={<App />}>
         <Route path="/" element={<Home />} />
-        <Route path="recipes" element={<RecipeIndex />} />
+        <Route path="recipes" element={<FolderIndex />} />
         <Route path="recipes/:folderName" element={<Folder />} />
         <Route path="recipes/:folderName/:recipeId" element={<Recipe />} />
         <Route path="new-recipe" element={<RecipeForm />} />
