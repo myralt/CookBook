@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Display\RecipePin;
 use App\Entity\Recipe;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -113,10 +114,24 @@ class RecipeController extends AbstractController
 
         $allPins = $repo->findBy(["pinned" => true]);
 
-        $resp = $serializer->serialize($allPins, 'json', [
-            DateTimeNormalizer::FORMAT_KEY => 'd-m-y H:i',
-            AbstractNormalizer::IGNORED_ATTRIBUTES => ['recipes', 'recipe']
-        ]);
+        $format = [];
+
+        foreach ($allPins as $pin) {
+            foreach ($pin->getImages() as $image) {
+                if ($image->getMain() == true) {
+                    $format[] = new RecipePin([
+                        "id" => $pin->getId(),
+                        "name" => $pin->getName(),
+                        "cookingTime" => $pin->getCookingTime(),
+                        "persons" => $pin->getPersons(),
+                        "pinSize" => $pin->getPinSize(),
+                        "image" => $image->getPath()
+                    ]);
+                }
+            }
+        }
+
+        $resp = $serializer->serialize($format, 'json');
 
         return new Response(
             $resp,
