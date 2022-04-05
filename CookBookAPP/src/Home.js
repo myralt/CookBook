@@ -1,26 +1,32 @@
 import { useState, useEffect } from "react";
+import Pin from "./Pin";
 
-function Home() {
-  const initialState = [{}];
-  const [pins, setPins] = useState(initialState);
+const Home = () => {
+  const [pins, setPins] = useState([]);
+
+  const fetchPins = () => {
+    fetch("http://127.0.0.1:8000/pins")
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        setPins(data);
+      });
+  };
 
   useEffect(() => {
-    const getPins = async () => {
-      const data = await fetch("http://127.0.0.1:8000/pins").then((response) =>
-        response.json()
-      );
-
-      setPins(data);
-    };
-
-    getPins();
+    fetchPins();
   }, []);
 
   return (
     <>
       <h1>Pinned</h1>
-      <p>{pins[0].name}</p>
+      <div>
+        {pins.map((pin) => (
+          <Pin key={pin.id} data={pin} />
+        ))}
+      </div>
     </>
   );
-}
+};
 export default Home;
