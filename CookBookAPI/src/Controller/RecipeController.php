@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Display\RecipePin;
 use App\Entity\Recipe;
+use DateTime;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +27,8 @@ class RecipeController extends AbstractController
             Recipe::class,
             'json'
         );
+
+        $form->setCreationDate(new DateTime());
 
         $errors = $validator->validate($form);
         if (!count($errors)) {

@@ -36,10 +36,10 @@ function RecipeForm() {
           {ingredients}
         </div>
 
-        <label htmlFor="prep-steps">Preparation Steps</label>
+        <label htmlFor="steps">Preparation Steps</label>
         <textarea
-          id="prep-steps"
-          name="prep-steps"
+          id="steps"
+          name="steps"
           cols="50"
           rows="10"
           placeholder="Ie: 1. Dice the vegetables..."
@@ -64,7 +64,28 @@ function RecipeForm() {
 
   function validateSubmission(event) {
     event.preventDefault();
-    console.log("No input yet.");
+    const inputs = document.forms[0];
+    let formData = new FormData();
+
+    formData.append("name", inputs.elements["name"].value);
+    formData.append("rating", inputs.elements["rating"].value);
+    formData.append("description", inputs.elements["description"].value);
+    formData.append("persons", inputs.elements["servings"].value);
+    formData.append("cookingTime", inputs.elements["time"].value);
+    formData.append("preparation", inputs.elements["steps"].value);
+
+    if (inputs.elements["pin"].checked) {
+      formData.append("pinned", true);
+    }
+
+    const folder = inputs.elements["folder"].value;
+    if (folder !== "") {
+      formData.append("folder", { name: folder });
+    }
+
+    for (let key of formData.entries()) {
+      console.log(key[0] + ": " + key[1]);
+    }
   }
 
   function addIngredient(event) {
