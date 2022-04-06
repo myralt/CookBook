@@ -10,6 +10,7 @@ function RecipeForm() {
       <form onSubmit={validateSubmission}>
         <label htmlFor="name">Name of Recipe : </label>
         <input type="text" id="name" name="name" required />
+        <br />
         <label htmlFor="description">Short Description :</label>
         <textarea
           id="description"
@@ -18,12 +19,16 @@ function RecipeForm() {
           rows="5"
           required
         ></textarea>
+        <br />
         <label htmlFor="servings">Number of servings :</label>
         <input type="number" id="servings" name="servings" min="1" required />
+        <br />
         <label htmlFor="time">Average Time (in minutes) :</label>
         <input type="number" id="time" name="time" required />
+        <br />
         <label htmlFor="rating">Your Rating :</label>
         <input type="number" id="rating" name="rating" min="1" required />
+        <br />
 
         <div id="ingredients">
           <h2>Ingredients :</h2>
@@ -40,14 +45,17 @@ function RecipeForm() {
           placeholder="Ie: 1. Dice the vegetables..."
           required
         ></textarea>
+        <br />
 
         <label htmlFor="pin">Do you want to pin this ?</label>
         <input type="checkbox" id="pin" name="pin" />
+        <br />
 
         <label htmlFor="folder">Select a folder :</label>
         <select id="folder" name="folder">
           <option value="">No folder</option>
         </select>
+        <br />
 
         <input type="submit" value="Save Recipe" />
       </form>

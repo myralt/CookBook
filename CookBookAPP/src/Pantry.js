@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router-dom";
 
-function Pantry() {
+const Pantry = () => {
   return (
     <>
       <p>pantry</p>
@@ -8,6 +8,5 @@ function Pantry() {
       <Outlet />
     </>
   );
-}
-
+};
 export default Pantry;
